@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - KFUEIT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2b6cb0;  /* KFUEIT Blue */
+      --secondary: #2c5282; /* Darker Blue */
+      --accent: #f6ad55;   /* Golden */
+      --highlight: #9f7aea; /* Purple */
+      --warning: #e53e3e;  /* Red for errors */
+      --light: #f7fafc;
+      --glass-bg: rgba(255, 255, 255, 0.2);
+      --glass-border: rgba(255, 255, 255, 0.3);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    @keyframes ripple {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    @keyframes flip {
+      0% { transform: rotateY(0); }
+      50% { transform: rotateY(90deg); }
+      100% { transform: rotateY(0); }
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 10px rgba(159, 122, 234, 0.5); }
+      50% { box-shadow: 0 0 25px rgba(159, 122, 234, 0.8); }
+      100% { box-shadow: 0 0 10px rgba(159, 122, 234, 0.5); }
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--light);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                  url('https://www.kfueit.edu.pk/wp-content/uploads/2021/07/KFUEIT-Cover-Image.jpg') no-repeat center center;
+      background-size: cover;
+      animation: fadeIn 1.5s ease-out;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.kfueit.edu.pk/wp-content/uploads/2021/07/KFUEIT-logo.png') no-repeat center 30px;
+      background-size: 180px auto;
+      opacity: 0.15;
+      pointer-events: none;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .login-container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 3rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: var(--shadow);
+      animation: zoomIn 0.8s ease-out, glow 3s infinite;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      z-index: 1;
+    }
+
+    .login-container:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      z-index: -1;
+      animation: rotate 20s linear infinite;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: slideInUp 0.8s ease-out;
+    }
+
+    .login-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .login-header p {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.5px;
+    }
+
+    .input-group {
+      margin-bottom: 1.8rem;
+      position: relative;
+      animation: slideInUp 0.8s ease-out 0.2s both;
+    }
+
+    .input-group:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.85rem 1rem 0.85rem 3rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 15px rgba(246, 173, 85, 0.4);
+      animation: pulse 1s;
+    }
+
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .input-group i {
+      position: absolute;
+      top: 50%;
+      left: 1.2rem;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.8);
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus + i {
+      color: var(--accent);
+      animation: pulse 1s infinite;
+    }
+
+    .password-toggle {
+      position: absolute;
+      top: 50%;
+      right: 1.2rem;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .password-toggle:hover {
+      color: var(--accent);
+      transform: translateY(-50%) scale(1.2);
+    }
+
+    .captcha-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      animation: slideInUp 0.8s ease-out 0.4s both;
+    }
+
+    .captcha-text {
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+
+    .captcha-input {
+      flex: 1;
+      padding: 0.7rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: white;
+      text-align: center;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .captcha-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.2);
+      animation: pulse 1s;
+    }
+
+    .refresh-captcha {
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .refresh-captcha:hover {
+      color: var(--accent);
+      transform: rotate(180deg);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-weight: 600;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(43, 108, 176, 0.4);
+      position: relative;
+      overflow: hidden;
+      animation: slideInUp 0.8s ease-out 0.5s both;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(43, 108, 176, 0.6);
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    .forgot-password {
+      text-align: center;
+      margin-top: 1.8rem;
+      animation: slideInUp 0.8s ease-out 0.6s both;
+    }
+
+    .forgot-password a {
+      color: var(--accent);
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    .forgot-password a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: var(--warning);
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 1.2rem;
+      display: none;
+      font-weight: 500;
+      animation: shake 0.6s ease;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      animation: slideInUp 0.8s ease-out 0.7s both;
+    }
+
+    .shake {
+      animation: shake 0.6s ease;
+    }
+
+    .flip {
+      animation: flip 0.6s ease;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--accent);
+      width: 0%;
+      border-radius: 4px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transition: width 0.3s ease;
+    }
+
+    .floating-icons {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .floating-icon {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.1);
+      animation: float 8s ease-in-out infinite;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 2rem;
+        margin: 0 1rem;
+        border-radius: 16px;
+      }
+
+      .login-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .input-group input {
+        padding: 0.75rem 1rem 0.75rem 2.8rem;
+      }
+
+      .captcha-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-login {
+        padding: 0.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body::before {
+        background-size: 120px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-icons">
+    <i class="fas fa-graduation-cap floating-icon" style="top: 15%; left: 10%; font-size: 2rem; animation-delay: 0s;"></i>
+    <i class="fas fa-book floating-icon" style="top: 25%; right: 15%; font-size: 1.8rem; animation-delay: 1s;"></i>
+    <i class="fas fa-flask floating-icon" style="bottom: 20%; left: 20%; font-size: 2.2rem; animation-delay: 2s;"></i>
+    <i class="fas fa-microscope floating-icon" style="bottom: 30%; right: 10%; font-size: 1.5rem; animation-delay: 3s;"></i>
+  </div>
+
+  <div class="login-container">
+    <div class="login-header">
+      <h1>KFUEIT PORTAL</h1>
+      <p>Sign in to access your academic dashboard</p>
+    </div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <input type="text" id="username" placeholder="Username or Email" required />
+        <i class="fas fa-user-graduate"></i>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Password" required />
+        <i class="fas fa-lock"></i>
+        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+      </div>
+
+      <div class="captcha-container">
+        <div class="captcha-text" id="captchaText">5 + 3</div>
+        <input type="text" class="captcha-input" id="captchaInput" placeholder="Answer" required />
+        <i class="fas fa-sync-alt refresh-captcha" id="refreshCaptcha"></i>
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <button type="submit" class="btn-login" id="loginButton">
+        <i class="fas fa-sign-in-alt mr-2"></i> LOGIN
+      </button>
+    </form>
+
+    <div class="forgot-password">
+      <a href="#"><i class="fas fa-unlock-alt"></i> Forgot Password?</a>
+    </div>
+
+    <div class="error-message" id="errorMessage"></div>
+
+    <div class="footer">
+      <p>© 2025 Khwaja Fareed University of Engineering & Information Technology</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Password toggle visibility
+      const togglePassword = document.getElementById('togglePassword');
+      const passwordInput = document.getElementById('password');
+      
+      togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+      });
+
+      // Generate random captcha
+      function generateCaptcha() {
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        const operators = ['+', '-', '*'];
+        const operator = operators[Math.floor(Math.random() * operators.length)];
+        
+        let answer;
+        switch(operator) {
+          case '+': answer = num1 + num2; break;
+          case '-': answer = num1 - num2; break;
+          case '*': answer = num1 * num2; break;
+        }
+        
+        return {
+          text: `${num1} ${operator} ${num2}`,
+          answer: answer
+        };
+      }
+
+      // Set up captcha with auto-refresh
+      let currentCaptcha;
+      let captchaInterval;
+      const captchaText = document.getElementById('captchaText');
+      const refreshCaptcha = document.getElementById('refreshCaptcha');
+      const progressBar = document.getElementById('progressBar');
+      
+      function setupCaptcha() {
+        if (captchaInterval) clearInterval(captchaInterval);
+        
+        currentCaptcha = generateCaptcha();
+        captchaText.textContent = currentCaptcha.text;
+        document.getElementById('captchaInput').value = '';
+        
+        captchaText.classList.add('flip');
+        setTimeout(() => captchaText.classList.remove('flip'), 600);
+        
+        progressBar.style.width = '0%';
+        
+        let width = 0;
+        const duration = 30000;
+        const interval = 100;
+        const increment = (interval / duration) * 100;
+        
+        captchaInterval = setInterval(() => {
+          width += increment;
+          progressBar.style.width = `${width}%`;
+          
+          if (width >= 100) {
+            clearInterval(captchaInterval);
+            setupCaptcha();
+          }
+        }, interval);
+      }
+      
+      setupCaptcha();
+      
+      refreshCaptcha.addEventListener('click', function() {
+        this.classList.add('fa-spin');
+        setTimeout(() => this.classList.remove('fa-spin'), 600);
+        setupCaptcha();
+      });
+
+      // Form submission
+      const loginForm = document.getElementById('loginForm');
+      
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const captchaAnswer = document.getElementById('captchaInput').value.trim();
+        const errorMessage = document.getElementById('errorMessage');
+        
+        errorMessage.style.display = 'none';
+        
+        if (!username || !password || !captchaAnswer) {
+          showError('Please fill in all fields');
+          return;
+        }
+        
+        if (parseInt(captchaAnswer) !== currentCaptcha.answer) {
+          showError('Incorrect captcha answer. Please try again.');
+          document.getElementById('captchaInput').value = '';
+          document.getElementById('captchaInput').focus();
+          return;
+        }
+        
+        // Simulate login - in a real app, this would be an API call
+        if (username === 'COSC231103001' && password === 'Batman12@') {
+          // Store login state in sessionStorage
+          sessionStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('username', 'Hanzla Tariq');
+          sessionStorage.setItem('regNo', 'COSC231103001');
+          
+          // Redirect to dashboard
+          window.location.href = 'Home.html';
+        } else {
+          showError('Invalid username or password');
+        }
+      });
+      
+      function showError(message) {
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+        errorMessage.classList.add('shake');
+        
+        setTimeout(() => {
+          errorMessage.classList.remove('shake');
+        }, 600);
+      }
+
+      // Check if already logged in
+      if (sessionStorage.getItem('isLoggedIn')){
+        window.location.href = 'Home.html';
+      }
+    });
+  </script>
+</body>
+</html>

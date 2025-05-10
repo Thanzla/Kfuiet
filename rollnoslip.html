@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roll No Slip - KFUEIT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6d28d9;  /* Rich purple */
+      --primary-light: #a78bfa;
+      --secondary: #14b8a6; /* Teal */
+      --accent: #f97316;   /* Orange */
+      --dark: #1e1b4b;     /* Deep indigo */
+      --light: #f8fafc;
+      --warning: #dc2626;  /* Red */
+      --success: #14b8a6;  /* Teal */
+      --glow: rgba(109, 40, 217, 0.5);
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+    }
+    
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 var(--glow); }
+      70% { box-shadow: 0 0 0 18px rgba(109, 40, 217, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(109, 40, 217, 0); }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(-50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes zoomIn {
+      from { transform: scale(1); }
+      to { transform: scale(1.15) rotate(3deg); }
+    }
+    
+    @keyframes ripple {
+      0% { transform: scale(0); opacity: 0.5; }
+      100% { transform: scale(4); opacity: 0; }
+    }
+    
+    body {
+      background: linear-gradient(-45deg, #1e1b4b, #312e81, #4338ca, #4f46e5);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: var(--light);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1rem;
+      position: relative;
+    }
+    
+    body::before {
+      content: 'KFUEIT';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      font-size: 10rem;
+      color: rgba(255, 255, 255, 0.05);
+      font-weight: 700;
+      pointer-events: none;
+    }
+    
+    .slip-container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 950px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transition: all 0.5s ease;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    .slip-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(109, 40, 217, 0.1) 0%, rgba(109, 40, 217, 0) 70%);
+      z-index: -1;
+      animation: pulse 6s infinite;
+    }
+    
+    .slip-container:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6);
+    }
+    
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      padding: 1.75rem;
+      border-radius: 15px;
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      animation: slideIn 0.6s ease-out;
+    }
+    
+    .header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.2) 100%);
+      transform: translateX(-100%);
+      animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+    
+    .title-section {
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      animation: fadeIn 1s ease-out;
+    }
+    
+    .title-section::after {
+      content: '';
+      display: block;
+      width: 150px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-light), var(--accent));
+      margin: 1rem auto 0;
+      border-radius: 4px;
+      animation: pulse 3s infinite;
+    }
+    
+    .section {
+      margin: 1.5rem 0;
+      padding: 1.5rem;
+      background: var(--glass-bg);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      transition: all 0.4s ease;
+      animation: slideIn 0.8s ease-out;
+    }
+    
+    .section:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .course-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 0.75rem;
+      font-size: 0.95rem;
+    }
+    
+    .course-table th,
+    .course-table td {
+      padding: 1rem;
+      text-align: left;
+    }
+    
+    .course-table th {
+      background: linear-gradient(135deg, var(--secondary), #0f766e);
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.85rem;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .course-table td {
+      background: var(--glass-bg);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .course-table tr:hover td {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.02);
+    }
+    
+    .warning {
+      color: var(--warning);
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(220, 38, 38, 0.4);
+      position: relative;
+      animation: pulse 2s infinite;
+    }
+    
+    .warning::before {
+      content: '⚠ ';
+    }
+    
+    .success {
+      color: var(--success);
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(20, 184, 166, 0.4);
+    }
+    
+    .buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    
+    .btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+    
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    
+    .btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn-back {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+    }
+    
+    .btn-print {
+      background: linear-gradient(135deg, var(--accent), #ea580c);
+      color: white;
+    }
+    
+    .student-photo-container {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.5s ease;
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    .student-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.5s ease;
+    }
+    
+    .student-photo-container:hover {
+      transform: scale(1.1) rotate(3deg);
+      border-color: var(--accent);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .student-photo-container:hover .student-photo {
+      animation: zoomIn 0.5s forwards;
+    }
+    
+    .photo-upload {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      text-align: center;
+      padding: 5px 0;
+      font-size: 0.75rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .student-photo-container:hover .photo-upload {
+      opacity: 1;
+    }
+    
+    .photo-upload input {
+      display: none;
+    }
+    
+    .photo-upload label {
+      cursor: pointer;
+      display: block;
+    }
+    
+    .qr-code {
+      width: 120px;
+      height: 120px;
+      background: white;
+      padding: 0.75rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.5s ease;
+    }
+    
+    .qr-code:hover {
+      transform: scale(1.1) rotate(3deg);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .info-item {
+      background: var(--glass-bg);
+      padding: 1rem;
+      border-radius: 10px;
+      border-left: 4px solid var(--accent);
+      backdrop-filter: blur(10px);
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .info-item:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .info-item strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .slip-container {
+        padding: 1.5rem;
+      }
+      
+      .header h1 {
+        font-size: 1.75rem;
+      }
+      
+      .header p {
+        font-size: 0.85rem;
+      }
+      
+      .section {
+        padding: 1.25rem;
+      }
+      
+      .course-table {
+        font-size: 0.85rem;
+      }
+      
+      .course-table th,
+      .course-table td {
+        padding: 0.75rem;
+      }
+      
+      .student-photo-container {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .qr-code {
+        width: 100px;
+        height: 100px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .slip-container {
+        padding: 1.25rem;
+      }
+      
+      .header {
+        padding: 1.25rem;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .course-table {
+        display: block;
+        overflow-x: auto;
+      }
+      
+      .title-section::after {
+        width: 100px;
+      }
+    }
+    
+    /* Print Styles */
+    @media print {
+      body {
+        background: none !important;
+        padding: 0 !important;
+        animation: none !important;
+      }
+      
+      body::before {
+        display: none !important;
+      }
+      
+      .slip-container {
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        page-break-after: avoid !important;
+        animation: none !important;
+      }
+      
+      .slip-container::before,
+      .slip-container::after {
+        display: none !important;
+      }
+      
+      .header {
+        background: linear-gradient(135deg, #6d28d9, #a78bfa) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color: white !important;
+        border-bottom: 2px solid #000 !important;
+        padding: 1rem 0 !important;
+        margin-bottom: 1rem !important;
+        animation: none !important;
+      }
+      
+      .header::after {
+        display: none !important;
+      }
+      
+      .section {
+        background: none !important;
+        border-left: 2px solid var(--accent) !important;
+        color: #000 !important;
+        page-break-inside: avoid !important;
+        animation: none !important;
+      }
+      
+      .course-table th {
+        background: linear-gradient(135deg, #14b8a6, #0f766e) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color: white !important;
+      }
+      
+      .course-table td {
+        background: none !important;
+        border-bottom: 1px solid #ddd !important;
+      }
+      
+      .buttons {
+        display: none !important;
+      }
+      
+      .student-photo-container,
+      .qr-code {
+        filter: grayscale(100%) !important;
+        border-color: #000 !important;
+        animation: none !important;
+      }
+      
+      .photo-upload {
+        display: none !important;
+      }
+      
+      @page {
+        size: A4;
+        margin: 1cm;
+      }
+      
+      .warning {
+        color: #000 !important;
+        font-weight: bold !important;
+        text-shadow: none !important;
+        animation: none !important;
+      }
+      
+      .success {
+        color: #000 !important;
+        text-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="slip-container">
+    <div class="header">
+      <h1 class="text-3xl font-bold">Khwaja Fareed UEIT</h1>
+      <p class="text-sm opacity-90">Abu Dhabi Road, Rahim Yar Khan, Punjab, Pakistan</p>
+      <p class="text-sm opacity-80">Tel: +92-68-92390122 | Email: info@kfueit.edu.pk</p>
+    </div>
+    
+    <div class="title-section">
+      <h2 class="text-2xl font-bold text-white">ROLL NUMBER SLIP</h2>
+      <p class="text-sm opacity-80" id="generated-time"></p>
+    </div>
+    
+    
+    <div class="section">
+      <div class="info-grid">
+        <div class="info-item">
+          <p><strong>Program:</strong> BS Computer Science (Afternoon)</p>
+          <p><strong>Session:</strong> Spring 2025</p>
+          <p><strong>Term:</strong> Mid Term Examination</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="info-grid">
+        <div class="info-item">
+          <p><strong>Student Name:</strong> Hanzla Tariq</p>
+          <p><strong>Father Name:</strong> Tariq Mehmood</p>
+        </div>
+        <div class="info-item">
+          <p><strong>Registration #:</strong> COSC231103001</p>
+          <p><strong>Date of Birth:</strong> May 05, 2005</p>
+        </div>
+        <div class="info-item flex justify-center items-center">
+          <div class="student-photo-container">
+            <img src="https://via.placeholder.com/140?text=Student+Photo" alt="Student Photo" class="student-photo" id="student-photo">
+            <div class="photo-upload">
+              <label for="photo-input">Change Photo</label>
+              <input type="file" id="photo-input" accept="image/*">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h3 class="font-semibold mb-4 text-xl border-b border-white/20 pb-2">COURSE REGISTRATION DETAILS</h3>
+      <table class="course-table">
+        <thead>
+          <tr>
+            <th>Course Code</th>
+            <th>Course Name</th>
+            <th>CH</th>
+            <th>Section</th>
+            <th>Attendance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>COSC-1104</td>
+            <td>Software Engineering</td>
+            <td>3</td>
+            <td>BS-COSC-4B</td>
+            <td class="success">85.71%</td>
+          </tr>
+          <tr>
+            <td>COSC-2112</td>
+            <td>Artificial Intelligence</td>
+            <td>2</td>
+            <td>BS-COSC-4B</td>
+            <td class="success">100%</td>
+          </tr>
+          <tr>
+            <td>COSC-2103</td>
+            <td>Database Systems</td>
+            <td>3</td>
+            <td>BS-COSC-4B</td>
+            <td class="warning">Below 75%</td>
+          </tr>
+          <tr>
+            <td>COSC-2203</td>
+            <td>Database Systems-Lab</td>
+            <td>1</td>
+            <td>BS-COSC-4B</td>
+            <td class="success">84.62%</td>
+          </tr>
+          <tr>
+            <td>STAT-2104</td>
+            <td>Probability and Statistics</td>
+            <td>3</td>
+            <td>BS-COSC-4B</td>
+            <td class="warning">Below 75%</td>
+          </tr>
+          <tr>
+            <td>SSCI-2131</td>
+            <td>Civics and Community Engagement</td>
+            <td>2</td>
+            <td>BS-COSC-4B</td>
+            <td class="success">81.82%</td>
+          </tr>
+          <tr>
+            <td>SSCI-2111</td>
+            <td>Professional Ethics</td>
+            <td>2</td>
+            <td>BS-COSC-4A, BS-COSC-4B</td>
+            <td class="warning">Below 75%</td>
+          </tr>
+          <tr>
+            <td>COSC-2212</td>
+            <td>Artificial Intelligence-Lab</td>
+            <td>1</td>
+            <td>BS-COSC-4B</td>
+            <td class="warning">Below 75%</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="mt-4 text-sm">
+        <p class="text-red-300 font-medium"><i class="fas fa-exclamation-triangle mr-2"></i> Warning: Courses marked with attendance below 75% may affect your eligibility</p>
+        <p class="opacity-80 mt-2"><i class="fas fa-info-circle mr-2"></i> Note: Contact examination department immediately for any discrepancies</p>
+      </div>
+    </div>
+    
+    <div class="flex justify-between items-center mt-8">
+      <div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=KFUEIT-ROLL-SLIP-COSC231103001&color=6d28d9&bgcolor=f8fafc" alt="QR Code" class="qr-code">
+        <p class="text-xs mt-2 opacity-70">Scan QR for verification</p>
+      </div>
+      <div class="buttons">
+        <button class="btn btn-back" onclick="window.history.back()">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="btn btn-print" onclick="window.print()">
+          <i class="fas fa-print"></i> Print Slip
+        </button>
+      </div>
+    </div>
+    
+    <div class="mt-8 text-center text-xs opacity-60 border-t border-white/10 pt-4">
+      
+      <p class="mt-1">2014-2025 Khwaja Fareed UEIT - All Rights Reserved</p>
+    </div>
+  </div>
+  
+  <script>
+    // Add staggered animations to table rows
+    document.querySelectorAll('.course-table tbody tr').forEach((row, index) => {
+      row.style.animation = `slideIn 0.5s ease-out ${index * 0.1}s forwards`;
+      row.style.opacity = '0';
+    });
+    
+    // Handle photo upload
+    const photoInput = document.getElementById('photo-input');
+    const studentPhoto = document.getElementById('student-photo');
+    
+    photoInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          studentPhoto.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // Enhanced print functionality with confirmation
+    document.querySelector('.btn-print').addEventListener('click', function() {
+      setTimeout(() => {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Print Roll No Slip</title>
+            <style>
+              body { 
+                font-family: 'Poppins', sans-serif;
+                background: white;
+                color: black;
+                padding: 20px;
+              }
+              @page { size: auto; margin: 0mm; }
+            </style>
+          </head>
+          <body>
+            ${document.querySelector('.slip-container').outerHTML}
+            <script>
+              window.onload = function() {
+                window.print();
+                setTimeout(function() {
+                  window.close();
+                }, 100);
+              };
+            <\/script>
+          </body>
+          </html>
+        `);
+        printWindow.document.close();
+      }, 300);
+    });
+    
+    // Add floating animation to header
+    const header = document.querySelector('.header');
+    let floatDirection = 1;
+    
+    function floatHeader() {
+      const currentY = parseFloat(getComputedStyle(header).getPropertyValue('transform').split(',')[5]) || 0;
+      if (currentY > 5) floatDirection = -1;
+      if (currentY < -5) floatDirection = 1;
+      header.style.transform = `translateY(${currentY + floatDirection * 0.5}px)`;
+      requestAnimationFrame(floatHeader);
+    }
+    
+    floatHeader();
+    
+    // Add ripple effect to buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        this.appendChild(ripple);
+        
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+        ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+        
+        ripple.addEventListener('animationend', () => ripple.remove());
+      });
+    });
+    function updateTime() {
+    const now = new Date();
+    const options = {
+      year: 'numeric', month: 'long', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: true
+    };
+    const formattedTime = now.toLocaleString('en-US', options);
+    document.getElementById('generated-time').textContent = `Generated on: ${formattedTime}`;
+  }
+
+  // Initial call
+  updateTime();
+
+  // Update every second
+  setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>

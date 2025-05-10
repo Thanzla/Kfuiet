@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transcript - KFUEIT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8b5cf6;  /* Vibrant purple */
+      --secondary: #22d3ee; /* Cyan */
+      --accent: #f59e0b;   /* Amber */
+      --dark: #1e1b4b;     /* Deep navy */
+      --light: #f8fafc;
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    @keyframes particleMove {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--dark), #3b0764, #7c3aed);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      font-family: 'Poppins', sans-serif;
+      color: var(--light);
+      margin: 0;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: particleMove 5s linear infinite;
+    }
+
+    .container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 2px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 950px;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.8s ease-out;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .container:hover::before {
+      opacity: 1;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+      animation: slideInLeft 0.8s ease-out;
+    }
+
+    .header img {
+      width: 120px;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--light);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: flex-end;
+      animation: slideInUp 0.8s ease-out;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+
+    .btn:focus:not(:active)::after {
+      animation: ripple 1s ease-out;
+    }
+
+    .table-container {
+      margin-bottom: 2rem;
+      animation: slideInUp 0.8s ease-out;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .table:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    }
+
+    .table th,
+    .table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .table th {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+    }
+
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .table tr:hover td {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .semester-header {
+      background: var(--secondary);
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      margin: 1.5rem 0 0.5rem;
+      border-radius: 8px;
+      animation: slideInLeft 0.8s ease-out;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .semester-header:hover {
+      background: #0ea5e9;
+      transform: translateX(5px);
+    }
+
+    .semester-header i {
+      transition: transform 0.3s ease;
+    }
+
+    .semester-header.collapsed i {
+      transform: rotate(-90deg);
+    }
+
+    .semester-content {
+      overflow: hidden;
+      transition: max-height 0.5s ease, opacity 0.3s ease;
+    }
+
+    .semester-content.collapsed {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    .badge-success {
+      background: #10b981;
+      color: white;
+    }
+
+    .badge-warning {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .badge-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .gpa-display {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      margin: 0.5rem 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .table th,
+      .table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 1rem;
+        border-radius: 15px;
+      }
+
+      .header img {
+        width: 80px;
+      }
+
+      .header h1 {
+        font-size: 1.3rem;
+      }
+
+      .semester-header {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+      }
+
+      .table th,
+      .table td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+
+      .particles, .buttons {
+        display: none;
+      }
+
+      .container {
+        background: none;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+        margin: 0;
+      }
+
+      .header img {
+        width: 80px;
+      }
+
+      .table {
+        border: 1px solid #000;
+      }
+
+      .table th {
+        background: #8b5cf6 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .semester-header {
+        background: #22d3ee !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      @page {
+        size: A4;
+        margin: 1cm;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+    <div class="header">
+      <img src="logo.png" alt="KFUEIT Logo" />
+      <h1>Khwaja Fareed University of Engineering & Information Technology</h1>
+      <p>Official Academic Transcript</p>
+    </div>
+
+    <div class="buttons">
+      <button class="btn" onclick="window.history.back()">
+        <i class="fas fa-arrow-left mr-2"></i> Back
+      </button>
+      <button class="btn" onclick="window.print()">
+        <i class="fas fa-print mr-2"></i> Print Transcript
+      </button>
+    </div>
+
+    <div class="table-container">
+      <table class="table">
+        <tr>
+          <th>RegNo</th>
+          <td>COSC231103001</td>
+          <th>Name</th>
+          <td>Hanzla Tariq</td>
+          <th>Phone</th>
+          <td>0310-6723281</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>thanzla2005@gmail.com</td>
+          <th>Program</th>
+          <td>BS Computer Science (Afternoon)</td>
+          <th>Session</th>
+          <td>2023-2027</td>
+        </tr>
+        <tr>
+          <th>Credit Hours Required</th>
+          <td>67</td>
+          <th>Credit Hours Completed</th>
+          <td>50</td>
+          <th>CGPA</th>
+          <td class="gpa-display">3.26</td>
+        </tr>
+        <tr>
+          <th>Degree Status</th>
+          <td>Incomplete <span class="badge badge-warning">In Progress</span></td>
+          <th>Academic Deficiency</th>
+          <td>None <span class="badge badge-success">Clear</span></td>
+          <th>Completion</th>
+          <td>
+            <div class="progress-container">
+              <div class="progress-bar" style="width: 35%"></div>
+            </div>
+            <span>30%</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="semester-header" onclick="toggleSemester('fall2023')">
+      <span>Fall Semester 2023</span>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="semester-content" id="fall2023">
+      <table class="table">
+        <tr>
+          <th>Course Code</th>
+          <th>Course Name</th>
+          <th>Grade</th>
+          <th>Grade Point</th>
+          <th>Credit Hours</th>
+          <th>GPA Earned</th>
+        </tr>
+        <tr>
+          <td>PHYS-1121</td>
+          <td>Applied Physics</td>
+          <td>C</td>
+          <td>2.00</td>
+          <td>3</td>
+          <td>6.00</td>
+        </tr>
+        <tr>
+          <td>COSC-1105</td>
+          <td>Introduction to ICT</td>
+          <td>B-</td>
+          <td>2.70</td>
+          <td>2</td>
+          <td>5.40</td>
+        </tr>
+        <tr>
+          <td>COSC-1205</td>
+          <td>Introduction to ICT-Lab</td>
+          <td>A-</td>
+          <td>3.70</td>
+          <td>1</td>
+          <td>3.70</td>
+        </tr>
+        <tr>
+          <td>ISLS-1128</td>
+          <td>Islamic Studies</td>
+          <td>A</td>
+          <td>4.00</td>
+          <td>2</td>
+          <td>8.00</td>
+        </tr>
+        <tr>
+          <td>COSC-1101</td>
+          <td>Programming Fundamentals</td>
+          <td>B-</td>
+          <td>2.70</td>
+          <td>3</td>
+          <td>8.10</td>
+        </tr>
+        <tr>
+          <td>COSC-1201</td>
+          <td>Programming Fundamentals-Lab</td>
+          <td>A+</td>
+          <td>4.00</td>
+          <td>1</td>
+          <td>4.00</td>
+        </tr>
+        <tr>
+          <td>MATH-1106</td>
+          <td>Quantitative Reasoning-I</td>
+          <td>A</td>
+          <td>4.00</td>
+          <td>3</td>
+          <td>12.00</td>
+        </tr>
+        <tr>
+          <td colspan="2">SGPA</td>
+          <td></td>
+          <td class="gpa-display">3.15</td>
+          <td></td>
+          <td>CGPA: <span class="gpa-display">3.15</span></td>
+        </tr>
+      </table>
+    </div>
+
+    
+   
+
+    <div class="semester-header" onclick="toggleSemester('fall2024')">
+      <span>Spring Semester 2024</span>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="semester-content" id="fall2024">
+      <table class="table">
+        <tr>
+          <th>Course Code</th>
+          <th>Course Name</th>
+          <th>Grade</th>
+          <th>Grade Point</th>
+          <th>Credit Hours</th>
+          <th>GPA Earned</th>
+        </tr>
+        <tr>
+          <td>COSC-2104</td>
+          <td>Computer Networks</td>
+          <td>C</td>
+          <td>2.00</td>
+          <td>2</td>
+          <td>4.00</td>
+        </tr>
+        <tr>
+          <td>COSC-2204</td>
+          <td>Computer Networks-Lab</td>
+          <td>A</td>
+          <td>4.00</td>
+          <td>1</td>
+          <td>4.00</td>
+        </tr>
+        <tr>
+          <td>COSC-2101</td>
+          <td>Data Structures & Algorithms</td>
+          <td>B-</td>
+          <td>2.70</td>
+          <td>3</td>
+          <td>8.10</td>
+        </tr>
+        <tr>
+          <td>COSC-2201</td>
+          <td>Data Structures & Algorithms-Lab</td>
+          <td>A</td>
+          <td>4.00</td>
+          <td>1</td>
+          <td>4.00</td>
+        </tr>
+        <tr>
+          <td>ENGL-2114</td>
+          <td>Expository Writing</td>
+          <td>A-</td>
+          <td>3.70</td>
+          <td>3</td>
+          <td>11.10</td>
+        </tr>
+        <tr>
+          <td colspan="2">SGPA</td>
+          <td></td>
+          <td class="gpa-display">3.65</td>
+          <td></td>
+          <td>CGPA: <span class="gpa-display">3.42</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="semester-header" onclick="toggleSemester('spring2025')">
+      <span>Fall Semester 2025</span>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="semester-content" id="spring2025">
+      <table class="table">
+        <tr>
+          <th>Course Code</th>
+          <th>Course Name</th>
+          <th>Grade</th>
+          <th>Grade Point</th>
+          <th>Credit Hours</th>
+          <th>GPA Earned</th>
+        </tr>
+        <tr>
+          <td>ENGL-2114</td>
+          <td>Expository Writing</td>
+          <td>A-</td>
+          <td>3.70</td>
+          <td>3</td>
+          <td>11.10</td>
+        </tr>
+        <tr>
+          <td>COSC-2111</td>
+          <td>Information Security</td>
+          <td>B</td>
+          <td>3.00</td>
+          <td>2</td>
+          <td>6.00</td>
+        </tr>
+        <tr>
+          <td>COSC-2211</td>
+          <td>Information Security-Lab</td>
+          <td>B+</td>
+          <td>3.30</td>
+          <td>1</td>
+          <td>3.30</td>
+        </tr>
+        <tr>
+          <td>MSCI-2113</td>
+          <td>Introduction to Entrepreneurship</td>
+          <td>D <span class="badge badge-danger">Retake</span></td>
+          <td>1.00</td>
+          <td>2</td>
+          <td>2.00</td>
+        </tr>
+        <tr>
+          <td>MATH-2103</td>
+          <td>Linear Algebra</td>
+          <td>A-</td>
+          <td>3.70</td>
+          <td>3</td>
+          <td>11.10</td>
+        </tr>
+        <tr>
+          <td colspan="2">SGPA</td>
+          <td></td>
+          <td class="gpa-display">2.98</td>
+          <td></td>
+          <td>CGPA: <span class="gpa-display">3.26</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>Copyright © 2025 Khwaja Fareed University of Engineering & Information Technology</p>
+      
+    </div>
+  </div>
+
+  <script>
+    // Generate particles for background animation
+    document.addEventListener('DOMContentLoaded', function() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = Math.floor(window.innerWidth / 10);
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.left = `${Math.random() * 100}vw`;
+        particle.style.top = `${Math.random() * 100}vh`;
+        particle.style.width = `${Math.random() * 4 + 2}px`;
+        particle.style.height = particle.style.width;
+        particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        particle.style.opacity = Math.random() * 0.5 + 0.2;
+        
+        // Random color variation
+        const hue = Math.random() * 60 + 30; // between yellow and orange
+        particle.style.background = `hsl(${hue}, 80%, 60%)`;
+        
+        particlesContainer.appendChild(particle);
+      }
+
+      // Initialize all semesters as expanded
+      document.querySelectorAll('.semester-content').forEach(el => {
+        el.classList.remove('collapsed');
+      });
+    });
+
+    // Toggle semester content
+    function toggleSemester(id) {
+      const content = document.getElementById(id);
+      const header = content.previousElementSibling;
+      
+      content.classList.toggle('collapsed');
+      header.classList.toggle('collapsed');
+    }
+
+    // Enhanced print functionality
+    document.querySelector('.btn[onclick="window.print()"]').addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Expand all sections before printing
+      document.querySelectorAll('.semester-content').forEach(el => {
+        el.classList.remove('collapsed');
+      });
+      document.querySelectorAll('.semester-header').forEach(el => {
+        el.classList.remove('collapsed');
+      });
+      
+      // Add slight delay to ensure DOM updates
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    });
+
+    // Add ripple effect to buttons
+    document.querySelectorAll('.btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const x = e.clientX - e.target.getBoundingClientRect().left;
+        const y = e.clientY - e.target.getBoundingClientRect().top;
+        
+        const ripple = document.createElement('span');
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        ripple.classList.add('ripple-effect');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 1000);
+      });
+    });
+  </script>
+</body>
+</html>

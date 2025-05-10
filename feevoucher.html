@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fee Voucher - KFUEIT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e3a8a;  /* Deep blue */
+      --primary-light: #3b82f6;
+      --secondary: #facc15; /* Golden yellow */
+      --accent: #22c55e;   /* Green for Paid status */
+      --pending: #f59e0b;   /* Yellow for Pending status */
+      --dark: #0f172a;     /* Dark slate */
+      --light: #f1f5f9;
+      --glass-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 5px var(--secondary); }
+      50% { box-shadow: 0 0 20px var(--secondary), 0 0 30px var(--primary); }
+      100% { box-shadow: 0 0 5px var(--secondary); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 0.5; }
+      50% { transform: translateY(-20px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0.5; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--dark), #1e3a8a, #3b82f6);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      font-family: 'Poppins', sans-serif;
+      color: var(--light);
+      margin: 0;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: var(--secondary);
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(30px);
+      border: 2px solid var(--glass-border);
+      border-radius: 30px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 1000px;
+      box-shadow: var(--shadow);
+      animation: zoomIn 1.2s ease-out;
+      position: relative;
+      z-index: 1;
+      margin: 2rem 0;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: zoomIn 1s ease-out;
+    }
+
+    .header img {
+      width: 120px;
+      margin-bottom: 1rem;
+      animation: glow 5s infinite;
+      filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.5));
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--light);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.5;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      animation: zoomIn 1.3s ease-out;
+    }
+
+    .btn {
+      padding: 0.7rem 1.3rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--light);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      animation: bounce 0.5s;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      animation: bounce 0.5s;
+    }
+
+    .btn-icon {
+      font-size: 1rem;
+    }
+
+    .voucher-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: space-between;
+      align-items: center;
+      animation: fadeInUp 1s ease-out;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .voucher-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .voucher-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .voucher-card:hover::before {
+      width: 6px;
+      background: var(--secondary);
+    }
+
+    .voucher-info {
+      flex: 1;
+      min-width: 250px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .voucher-info div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .voucher-info span:first-child {
+      font-weight: 600;
+      color: var(--secondary);
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .voucher-info span:last-child {
+      color: var(--light);
+      font-weight: 500;
+    }
+
+    .status {
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      font-weight: 500;
+      text-align: center;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      animation: blink 2s infinite;
+    }
+
+    .status-paid {
+      background: var(--accent);
+      color: var(--dark);
+    }
+
+    .status-pending {
+      background: var(--pending);
+      color: var(--dark);
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .download-btn, .print-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .download-btn {
+      background: var(--accent);
+      color: var(--dark);
+    }
+
+    .print-btn {
+      background: var(--primary-light);
+      color: white;
+    }
+
+    .download-btn:hover, .print-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      animation: bounce 0.5s;
+    }
+
+    .download-btn:hover {
+      background: #16a34a;
+    }
+
+    .print-btn:hover {
+      background: #2563eb;
+    }
+
+    .amount {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white !important;
+    }
+
+    .search-filter {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box, .filter-select {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.7rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      animation: slideIn 1s ease-out;
+    }
+
+    .search-box:focus, .filter-select:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.2);
+    }
+
+    .search-box::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .no-vouchers {
+      text-align: center;
+      padding: 2rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.1rem;
+      animation: pulse 2s infinite;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .container {
+        padding: 1.5rem;
+        border-radius: 20px;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .header p {
+        font-size: 0.8rem;
+      }
+
+      .header img {
+        width: 100px;
+      }
+
+      .voucher-card {
+        padding: 1.2rem;
+        gap: 1rem;
+      }
+
+      .voucher-info {
+        grid-template-columns: 1fr 1fr;
+        font-size: 0.9rem;
+      }
+
+      .action-btns {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .container {
+        padding: 1.2rem;
+        margin: 1rem 0;
+      }
+
+      .voucher-info {
+        grid-template-columns: 1fr;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .search-filter {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+
+      .particles, .buttons, .search-filter, .download-btn, .print-btn {
+        display: none;
+      }
+
+      .container {
+        background: none;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+        margin: 0;
+        animation: none;
+      }
+
+      .header img {
+        width: 80px;
+        animation: none;
+        filter: none;
+      }
+
+      .voucher-card {
+        border: 1px solid #ddd;
+        page-break-inside: avoid;
+        margin-bottom: 1rem;
+      }
+
+      .voucher-card::before {
+        display: none;
+      }
+
+      .status-paid, .status-pending {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .footer {
+        display: none;
+      }
+
+      @page {
+        size: A4;
+        margin: 1cm;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+    <div class="header">
+      <img src="logo.png" alt="KFUEIT Logo" />
+      <h1>Khwaja Fareed University of Engineering & Information Technology</h1>
+      <p>Address: Abu Dhabi Road, Rahim Yar Khan<br>Tel: +92-68-9239122 Fax: +92-68-9239121</p>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-secondary" onclick="window.history.back()">
+        <i class="fas fa-arrow-left btn-icon"></i> Back
+      </button>
+      <div class="search-filter">
+        <input type="text" class="search-box" placeholder="Search vouchers..." id="searchInput" oninput="debounce(filterVouchers, 300)">
+        <select class="filter-select" id="statusFilter" onchange="filterVouchers()">
+          <option value="all">All Status</option>
+          <option value="paid">Paid</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-bold text-center mb-6 text-white">My Fee Vouchers</h2>
+
+    <div id="vouchersContainer">
+      <div class="voucher-card">
+        <div class="voucher-info">
+          <div><span>SrNo</span> <span>1</span></div>
+          <div><span>Challan No</span> <span>10652240</span></div>
+          <div><span>Voucher Type</span> <span>Semester Exam Fee</span></div>
+          <div><span>Semester</span> <span>Spring 2025</span></div>
+          <div><span>Due Date</span> <span>31 Jan, 2025</span></div>
+          <div><span>Amount</span> <span class="amount">50,000.00 PKR</span></div>
+          <div><span>Status</span> <span class="status status-paid">Paid</span></div>
+        </div>
+        <div class="action-btns">
+          <button class="print-btn" onclick="printVoucher(this)">
+            <i class="fas fa-print"></i> Print
+          </button>
+          <button class="download-btn" onclick="downloadVoucher(this)">
+            <i class="fas fa-download"></i> Download
+          </button>
+        </div>
+      </div>
+
+      <div class="voucher-card">
+        <div class="voucher-info">
+          <div><span>SrNo</span> <span>2</span></div>
+          <div><span>Challan No</span> <span>10643527</span></div>
+          <div><span>Voucher Type</span> <span>Tuition Fee</span></div>
+          <div><span>Semester</span> <span>Spring 2025</span></div>
+          <div><span>Due Date</span> <span>07 Feb, 2025</span></div>
+          <div><span>Amount</span> <span class="amount">60,500.00 PKR</span></div>
+          <div><span>Status</span> <span class="status status-paid">Paid</span></div>
+        </div>
+        <div class="action-btns">
+          <button class="print-btn" onclick="printVoucher(this)">
+            <i class="fas fa-print"></i> Print
+          </button>
+          <button class="download-btn" onclick="downloadVoucher(this)">
+            <i class="fas fa-download"></i> Download
+          </button>
+        </div>
+      </div>
+
+      <div class="voucher-card">
+        <div class="voucher-info">
+          <div><span>SrNo</span> <span>3</span></div>
+          <div><span>Challan No</span> <span>10616526</span></div>
+          <div><span>Voucher Type</span> <span>Misc. Charges (Sports/Health/Utility)</span></div>
+          <div><span>Semester</span> <span>Fall 2024</span></div>
+          <div><span>Due Date</span> <span>13 Sep, 2024</span></div>
+          <div><span>Amount</span> <span class="amount">500.00 PKR</span></div>
+          <div><span>Status</span> <span class="status status-paid">Paid</span></div>
+        </div>
+        <div class="action-btns">
+          <button class="print-btn" onclick="printVoucher(this)">
+            <i class="fas fa-print"></i> Print
+          </button>
+          <button class="download-btn" onclick="downloadVoucher(this)">
+            <i class="fas fa-download"></i> Download
+          </button>
+        </div>
+      </div>
+
+      <div class="voucher-card">
+        <div class="voucher-info">
+          <div><span>SrNo</span> <span>4</span></div>
+          <div><span>Challan No</span> <span>10557693</span></div>
+          <div><span>Voucher Type</span> <span>Semester Exam Fee</span></div>
+          <div><span>Semester</span> <span>Fall 2024</span></div>
+          <div><span>Due Date</span> <span>08 Jun, 2024</span></div>
+          <div><span>Amount</span> <span class="amount">5,000.00 PKR</span></div>
+          <div><span>Status</span> <span class="status status-pending">Pending</span></div>
+        </div>
+        <div class="action-btns">
+          <button class="print-btn" onclick="printVoucher(this)">
+            <i class="fas fa-print"></i> Print
+          </button>
+          <button class="download-btn" onclick="downloadVoucher(this)">
+            <i class="fas fa-download"></i> Download
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Copyright © 2025 Khwaja Fareed University of Engineering & Information Technology</p>
+      <p>Developed by HT-virus</p>
+    </div>
+  </div>
+
+  <script>
+    // Generate fewer particles for better performance
+    document.addEventListener('DOMContentLoaded', function() {
+      const particlesContainer = document.getElementById('particles');
+      for (let i = 0; i < 15; i++) { // Reduced from 30 to 15
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.left = `${Math.random() * 100}vw`;
+        particle.style.top = `${Math.random() * 100}vh`;
+        particle.style.animationDuration = `${Math.random() * 5 + 3}s`;
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        particle.style.width = `${Math.random() * 4 + 3}px`;
+        particle.style.height = particle.style.width;
+        particlesContainer.appendChild(particle);
+      }
+
+      // Initialize with all vouchers visible
+      filterVouchers();
+    });
+
+    // Debounce function to optimize search/filter performance
+    function debounce(func, wait) {
+      let timeout;
+      return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    // Filter vouchers based on search and status
+    function filterVouchers() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+      const vouchers = document.querySelectorAll('.voucher-card');
+      let visibleCount = 0;
+
+      vouchers.forEach(voucher => {
+        const textContent = voucher.textContent.toLowerCase();
+        const status = voucher.querySelector('.status').textContent.toLowerCase();
+        
+        const matchesSearch = textContent.includes(searchTerm);
+        const matchesStatus = statusFilter === 'all' || status.includes(statusFilter);
+        
+        if (matchesSearch && matchesStatus) {
+          voucher.style.display = 'flex';
+          visibleCount++;
+        } else {
+          voucher.style.display = 'none';
+        }
+      });
+
+      // Show message if no vouchers match the filter
+      const noResults = document.getElementById('noResults');
+      if (visibleCount === 0) {
+        if (!noResults) {
+          const container = document.getElementById('vouchersContainer');
+          const message = document.createElement('div');
+          message.id = 'noResults';
+          message.className = 'no-vouchers';
+          message.textContent = 'No vouchers found matching your criteria.';
+          container.appendChild(message);
+        }
+      } else if (noResults) {
+        noResults.remove();
+      }
+    }
+
+    // Download voucher as PDF
+    function downloadVoucher(button) {
+      const voucherCard = button.closest('.voucher-card');
+      const challanNo = voucherCard.querySelector('.voucher-info div:nth-child(2) span:last-child').textContent;
+      
+      // Create a clone for PDF generation
+      const clone = voucherCard.cloneNode(true);
+      clone.style.width = '100%';
+      clone.style.padding = '20px';
+      clone.style.backgroundColor = 'white';
+      clone.style.color = 'black';
+      clone.style.border = 'none';
+      
+      // Remove action buttons from the clone
+      const actionBtns = clone.querySelector('.action-btns');
+      if (actionBtns) actionBtns.remove();
+      
+      // Add university header
+      const header = document.createElement('div');
+      header.style.textAlign = 'center';
+      header.style.marginBottom = '20px';
+      header.style.borderBottom = '1px solid #ddd';
+      header.style.paddingBottom = '15px';
+      
+      const logo = document.createElement('img');
+      logo.src = 'logo.png';
+      logo.style.width = '80px';
+      logo.style.marginBottom = '10px';
+      logo.onerror = function() {
+        this.src = 'https://via.placeholder.com/80?text=KFUEIT+Logo'; // Fallback if logo fails to load
+      };
+      
+      const title = document.createElement('h2');
+      title.textContent = 'Khwaja Fareed University of Engineering & Information Technology';
+      title.style.fontSize = '18px';
+      title.style.fontWeight = 'bold';
+      title.style.marginBottom = '5px';
+      
+      const subtitle = document.createElement('p');
+      subtitle.textContent = 'Fee Payment Voucher';
+      subtitle.style.fontSize = '16px';
+      subtitle.style.fontWeight = '600';
+      subtitle.style.color = '#1e3a8a';
+      
+      header.appendChild(logo);
+      header.appendChild(title);
+      header.appendChild(subtitle);
+      
+      clone.insertBefore(header, clone.firstChild);
+      
+      // Add footer
+      const footer = document.createElement('div');
+      footer.style.textAlign = 'center';
+      footer.style.marginTop = '20px';
+      footer.style.fontSize = '12px';
+      footer.style.color = '#666';
+      footer.style.borderTop = '1px solid #ddd';
+      footer.style.paddingTop = '10px';
+      footer.textContent = 'Generated on ' + new Date().toLocaleDateString() + ' | © 2025 KFUEIT';
+      
+      clone.appendChild(footer);
+      
+      // Generate PDF
+      const opt = {
+        margin: 10,
+        filename: `Fee_Voucher_${challanNo}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          logging: true,
+          useCORS: true,
+          allowTaint: true
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      html2pdf().set(opt).from(clone).save();
+    }
+
+    // Print voucher
+    function printVoucher(button) {
+      const voucherCard = button.closest('.voucher-card');
+      const printWindow = window.open('', '_blank');
+      
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Fee Voucher - KFUEIT</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; background: white; }
+            .voucher { border: 1px solid #ddd; padding: 20px; max-width: 800px; margin: 0 auto; }
+            .header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 15px; }
+            .header img { width: 80px; margin-bottom: 10px; }
+            .header h2 { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+            .header p { font-size: 16px; font-weight: 600; color: #1e3a8a; }
+            .voucher-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+            .voucher-info div span:first-child { font-weight: bold; color: #1e3a8a; display: block; margin-bottom: 5px; font-size: 14px; }
+            .status { padding: 3px 10px; border-radius: 4px; font-weight: bold; display: inline-block; }
+            .status-paid { background: #22c55e; color: #000; }
+            .status-pending { background: #f59e0b; color: #000; }
+            .amount { font-weight: bold; font-size: 16px; }
+            .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; border-top: 1px solid #ddd; padding-top: 10px; }
+            @page { size: A4; margin: 10mm; }
+          </style>
+        </head>
+        <body>
+          <div class="voucher">
+            <div class="header">
+              <img src="logo.png" alt="KFUEIT Logo" onerror="this.src='https://via.placeholder.com/80?text=KFUEIT+Logo'" />
+              <h2>Khwaja Fareed University of Engineering & Information Technology</h2>
+              <p>Fee Payment Voucher</p>
+            </div>
+            ${voucherCard.innerHTML.replace(/class="action-btns"/g, 'class="action-btns-print"')}
+            <div class="footer">
+              Generated on ${new Date().toLocaleDateString()} | © 2025 KFUEIT
+            </div>
+          </div>
+          <script>
+            window.focus();
+            window.print();
+            setTimeout(function() {
+              window.close();
+            }, 500); // Delay closing to ensure print dialog is handled
+          <\/script>
+        </body>
+        </html>
+      `);
+      
+      printWindow.document.close();
+    }
+  </script>
+</body>
+</html>
